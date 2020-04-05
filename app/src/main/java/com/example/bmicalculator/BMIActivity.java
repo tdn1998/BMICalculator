@@ -1,7 +1,7 @@
 package com.example.bmicalculator;
 
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
@@ -23,7 +24,6 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class BMIActivity extends AppCompatActivity {
 
-    private Toolbar toolbar_bmi;
     private ChipGroup chipGroup;
     private AppCompatSeekBar height_seek, weight_seek;
     private MaterialTextView height_text, weight_text, your_bmi_value, bmi_status, bmi_table;
@@ -45,7 +45,7 @@ public class BMIActivity extends AppCompatActivity {
         bmi_table = findViewById(R.id.bmi_table);
         cal = findViewById(R.id.cal);
 
-        toolbar_bmi = findViewById(R.id.toolbar_bmi);
+        Toolbar toolbar_bmi = findViewById(R.id.toolbar_bmi);
         setSupportActionBar(toolbar_bmi);
 
         height_text.setText(String.valueOf(height_seek.getProgress()));
@@ -106,6 +106,7 @@ public class BMIActivity extends AppCompatActivity {
         });
 
         cal.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 if (gender == 0) {
@@ -122,13 +123,20 @@ public class BMIActivity extends AppCompatActivity {
         bmi_table.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BMIActivity.this, BMITableActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                opendialog();
+                //Intent intent = new Intent(BMIActivity.this, BMITableActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //startActivity(intent);
             }
         });
     }
 
+    private void opendialog() {
+        BMIDialog bmidialog = new BMIDialog();
+        bmidialog.show(getSupportFragmentManager(),"example dialog");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void show_status(float value) {
         if (value >= 18.0 && value <= 25.0) {
             your_bmi_value.setText(String.format("%.2f", value));

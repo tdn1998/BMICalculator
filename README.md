@@ -1,7 +1,7 @@
 # BMICalculator
 This is a Simple BMI Calculator.
 
-#License
+# License
 
 Copyright 2020 DarkN'Dev
 
